@@ -13,7 +13,11 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Locale;
+import java.util.TimeZone;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -29,6 +33,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     String description;
     int selectedPosition;
     int  newQnt;
+    String timeSt;
 
 
 
@@ -151,19 +156,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 if(tvDisplay.getText().toString().isEmpty() || tvQnt.getText().toString().isEmpty()){
                     Toast.makeText(this, "No Product or Quantity is chosen", Toast.LENGTH_LONG).show();
                 }else {
+                    timeSt = generateTimestamp();
+
                     AlertDialog.Builder builder = new AlertDialog.Builder(this);
                     builder.setTitle("Thank you for your purchase");
                     builder.setMessage("Your purchase is " + totalQnt + " " + description + " for $" + p);
+
                     AlertDialog alertDialog = builder.create();
                     alertDialog.show();
-                    PurchaseHistory newHistory = new PurchaseHistory(description, price, quantity, totalPrice, totalQnt);
+                    PurchaseHistory newHistory = new PurchaseHistory(description, price, quantity, totalPrice, totalQnt, timeSt);
                     MyApp.addToHistoryList(newHistory);
 
 
                 }
+                if (totalQnt > 0) {
+                    newQnt = quantity - totalQnt;
+                    updateItemQuantity(selectedPosition, newQnt);
+                }
 
-                newQnt = quantity - totalQnt;
-                updateItemQuantity(selectedPosition, newQnt);
+//                newQnt = quantity - totalQnt;
+//                updateItemQuantity(selectedPosition, newQnt);
                 tvDisplay.setText("");
                 tvTotalAm.setText("");
                 tvQnt.setText("");
@@ -194,6 +206,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 adapter.notifyDataSetChanged();
             }
         }
+    }
+
+    private String generateTimestamp() {
+        // Create a SimpleDateFormat object with the desired format
+        SimpleDateFormat sdf = new SimpleDateFormat("EEE MMM dd HH:mm:ss z yyyy", Locale.ENGLISH);
+
+        // Set the time zone to EDT (Eastern Daylight Time)
+        sdf.setTimeZone(TimeZone.getTimeZone("EDT"));
+
+        // Get the current date and time
+        Date currentDate = new Date();
+
+        // Format the date and return the timestamp
+        return sdf.format(currentDate);
     }
     
 }

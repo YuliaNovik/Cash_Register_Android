@@ -91,15 +91,7 @@ public class RestockActivity extends AppCompatActivity implements View.OnClickLi
                     updateItemQuantity(positionIndex, newQnt);
                 }
 
-//                if (positionIndex == -1 ||  editQuantity.getText().toString().isEmpty()) {
-//                    Toast.makeText(this, "Choose a Product Item", Toast.LENGTH_LONG).show();
-//                } else {
-//                    String setQuantity = editQuantity.getText().toString();
-//                    if (!setQuantity.isEmpty()) {
-//                        newQnt = Integer.parseInt(setQuantity);
-//                    }
-//                    updateItemQuantity(positionIndex, newQnt);
-//                }
+
 
 
                 break;
